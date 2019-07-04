@@ -28,3 +28,12 @@ strongswan_conn: []
 #   secret: abcde...z
 
 mtu: 0
+compile: false
+compile_download_version: 5.8.0
+strongswan_compile_configure_parameters: "--prefix=/usr --sysconfdir=/etc --enable-ha --enable-systemd --enable-swanctl --with-systemdsystemunitdir=/etc/systemd/system/"
+strongswan_download_url: https://download.strongswan.org/strongswan-{{ compile_download_version }}.tar.gz
+strong_swan_tar_name: "{{ strongswan_download_url | urlsplit }}"
+strongswan_basedir: "/usr/src/strongswan"
+strongswan:
+  tar: "{{strongswan_basedir}}/tar{{strong_swan_tar_name}}"
+  src: "{{strongswan_basedir}}/src"

@@ -1,6 +1,19 @@
 ---
 
 - name: run the main role
-  hosts: all
+  hosts: instance-1
+  become: true
+  become_method: su
+  become_user: root
+  roles:
+    - {role: ansible-strongswan}
+
+- name: run the main role
+  hosts: ha
+  become: true
+  become_method: su
+  become_user: root
+  vars:
+    compile: true
   roles:
     - {role: ansible-strongswan}

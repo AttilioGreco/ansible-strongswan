@@ -1,15 +1,25 @@
 ---
 # tasks file for strongswan
+- name: debug
+  debug:
+    var: compile
 
 - include: debian.yml
   when:
-    ansible_os_family == "Debian"
+    - ansible_os_family == "Debian"
+    - not compile
 - include: redhat.yml
   when:
-    ansible_os_family == "RedHat"
+    - ansible_os_family == "RedHat"
+    - not compile
 - include: arch.yml
   when:
-    ansible_os_family == "Archlinux"
+    - ansible_os_family == "Archlinux"
+    - not compile
+
+- include: compile-debian.yml
+  when:
+    - compile
 
 - include: config.yml
 - include: service.yml

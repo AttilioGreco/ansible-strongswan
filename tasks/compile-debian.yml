@@ -1,0 +1,82 @@
+- include_vars: debian.yml
+
+- name: Compile-debian | Installing StrongSwan Dependecy
+  become: yes
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+  - gcc 
+  - make
+  - libgmp3-dev
+  - libsystemd-dev
+
+- name: debug
+  debug:
+    var: strong_swan_tar_name
+
+- name: Clear strongswan.basedir
+  file:
+    state: absent
+    path: "{{ strongswan_basedir }}"
+
+- name: Compile-debian | Create strongswan.basedir dir
+  file:
+    path: "{{ strongswan_basedir }}"
+    owner: root
+    group: root
+    state: directory
+    mode: '0644'
+
+- name: Compile-debian | Create strongswan.tar dir
+  file:
+    path: "{{ strongswan.tar }}"
+    owner: root
+    group: root
+    state: directory
+    mode: '0644'
+
+- name: Compile-debian | Create strongswan.src dir
+  file:
+    path: "{{ strongswan.src }}"
+    owner: root
+    group: root
+    state: directory
+    mode: '0644'
+
+- name: Compile-debian | Download compile_download_url
+  get_url:
+    url: "{{ strongswan_download_url }}"
+    dest: "{{strongswan.tar}}.tar.gz"
+    validate_certs: False
+  register: strongswan_source
+
+- name: Compile-debian | debug
+  debug:
+    var: strongswan_source
+
+- name: Compile-debian | unarchive source code
+  unarchive:
+    copy: no
+    dest: "{{ strongswan.src }}"
+    src: "{{ strongswan_source.dest }}"
+  when: strongswan_source.changed
+  register: strongswan_source_unpack
+
+- name: Compile-debian | debug
+  debug:
+    var: strongswan_source_unpack 
+  
+- name: Configuring StrongSwan source
+  command: "./configure {{ strongswan_compile_configure_parameters }}"
+  args:
+    chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
+  when: strongswan_source_unpack|changed
+  register: strongswan_configure
+
+- name: Compile-debian | show strongswan_configure
+  debug:
+    var: strongswan_configure
+
+- fail:
+    msg: Stoppa il ruolo

@@ -6,7 +6,13 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance-1
+#  - name: instance-1
+  - name: ha-1
+    groups:
+      - ha
+  - name: ha-2
+    groups:
+      - ha
 provisioner:
   name: ansible
   options:
