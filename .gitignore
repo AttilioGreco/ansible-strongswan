@@ -9,3 +9,5 @@ ansible-galaxy-*
 ansible-role-*
 *.pem
 *.pem.pub
+*.swp
+*.swo

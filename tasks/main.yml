@@ -1,2 +1,16 @@
 ---
-# tasks
+# tasks file for strongswan
+
+- include: debian.yml
+  when:
+    ansible_os_family == "Debian"
+- include: redhat.yml
+  when:
+    ansible_os_family == "RedHat"
+- include: arch.yml
+  when:
+    ansible_os_family == "Archlinux"
+
+- include: config.yml
+- include: service.yml
+- include: firewall.yml

@@ -1,0 +1,62 @@
+---
+# config-specific task file for strongswan
+
+- name: Copy script available for nat connections
+  copy: src=_updown_nat dest=/usr/lib/ipsec/ mode=0755
+  notify:
+    restart strongswan
+
+- name: Configure kernel-netlink settings
+  template:
+    src: kernel-netlink.conf.j2
+    dest: /etc/strongswan.d/charon/kernel-netlink.conf
+    mode: 0750
+  notify:
+    restart strongswan
+
+- name: Create config and secrets fragment directories
+  file:
+    path: "{{ strongswan_config_base }}/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+  with_items:
+    - ipsec.conf.d
+    - ipsec.secrets.d
+
+- name: Configure strongSwan core settings
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ strongswan_config_base }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    restart strongswan
+  with_items:
+    - ipsec.conf
+    - ipsec.secrets
+
+- name: Configure strongSwan default connection settings
+  template:
+    src: defaults.conf.j2
+    dest: "{{ strongswan_config_base }}/ipsec.conf.d/00-defaults.conf"
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    restart strongswan
+
+- name: Configure strongSwan per-connection settings
+  template:
+    src: "connection.{{ item.1 }}.j2"
+    dest: "{{ strongswan_config_base }}/ipsec.{{ item.1 }}.d/{{ item.0.priority | default(99) }}-{{ item.0.name }}.{{ item.1 }}"
+    owner: root
+    group: root
+    mode: 0640
+  with_nested:
+    - "{{ strongswan_conn }}"
+    - [ 'conf', 'secrets' ]
+  notify:
+    restart strongswan
