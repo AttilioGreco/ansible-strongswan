@@ -71,7 +71,7 @@
   command: "./configure {{ strongswan_compile_configure_parameters }}"
   args:
     chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
-  when: strongswan_source_unpack|changed
+  when: strongswan_source_unpack.changed
   register: strongswan_configure
 
 - name: Compile-debian | show strongswan_configure
