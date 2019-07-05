@@ -1,7 +1,7 @@
 ---
 # firewall-specific tasks for strongswan
 
-- name: Enable ip forward
+- name:  firewall | Enable ip forward
   sysctl:
     name: net.ipv4.ip_forward
     value: 1
@@ -9,7 +9,7 @@
     state: present
     reload: yes
 
-- name: Open firewalld protocols for strongSwan
+- name:  firewall | Open firewalld protocols for strongSwan
   firewalld:
     rich_rule: "rule protocol value={{ item }} accept"
     permanent: true
@@ -21,7 +21,7 @@
     - ah
     - esp
 
-- name: Open firewalld ports for strongSwan
+- name:  firewall | Open firewalld ports for strongSwan
   firewalld:
     port: "{{ item }}"
     permanent: true
@@ -33,7 +33,7 @@
     - 500/udp
     - 4500/udp
 
-# - name: "Configure firewall rules to allow strongSwan traffic"
+# - name:  firewall | "Configure firewall rules to allow strongSwan traffic"
 #   ufw:
 #     direction=in
 #     src="{{ item.0.right.address }}"
@@ -50,7 +50,7 @@
 # # NOTE: This is a temporary override until the IPSec policy roles are in place,
 # #       and requires a patched ufw.py script to allow configuration of GRE
 # #       protocols.
-# - name: "Configure firewall rules to allow GRE traffic for configured hosts"
+# - name:  firewall | "Configure firewall rules to allow GRE traffic for configured hosts"
 #   ufw:
 #     direction=in
 #     src="{{ item.right.address }}"

@@ -3,7 +3,7 @@
 
 - include_vars: redhat.yml
 
-- name: Install strongSwan
+- name:  redhat | Install strongSwan
   yum:
     name: "{{ item }}"
     state: present
