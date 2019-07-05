@@ -1,5 +1,13 @@
 - include_vars: debian.yml
 
+- name: Compile-debian | show active_node_ip
+  debug:
+    var: active_node_ip
+
+- name: Compile-debian | show passive_node_ip
+  debug:
+    var: passive_node_ip
+
 - name: Compile-debian | Installing StrongSwan Dependecy
   become: yes
   apt:
@@ -10,6 +18,7 @@
   - make
   - libgmp3-dev
   - libsystemd-dev
+  - pkg-config
 
 - name: debug
   debug:
@@ -78,5 +87,17 @@
   debug:
     var: strongswan_configure
 
-- fail:
-    msg: Stoppa il ruolo
+- name: Compile-debian | Build StrongSwan
+  make:
+    chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
+  register: strongswan_make
+
+- name: Compile-debian | show strongswan_configure
+  debug:
+    var: strongswan_make
+
+- name: Compile-debian | Install StrongSwan
+  make:
+    chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
+    target: install
+  become: yes

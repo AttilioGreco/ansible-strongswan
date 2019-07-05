@@ -14,6 +14,15 @@
   notify:
     restart strongswan
 
+- name: Config | add HA configurations parameters
+  template:
+    src: ha.conf.j2
+    dest: /etc/strongswan.d/charon/ha.conf
+    mode: 0750
+  notify:
+    restart strongswan
+  when: ha
+
 - name: Config | Create config and secrets fragment directories
   file:
     path: "{{ strongswan_config_base }}/{{ item }}"

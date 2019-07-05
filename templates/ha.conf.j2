@@ -1,0 +1,22 @@
+ha {
+    {%- for host in ha_strong_swan_groups -%}
+    {%- if host != inventory_hostname -%}
+    local = {{ansible_default_ipv4['address']}}
+    {%- else -%}
+    remote = {{hostvars[host].ansible_default_ipv4.address}}
+    {%- endif -%}
+    {%- endfor -%}
+
+    {% if ha %}
+    load = yes
+    {% else %}
+    load = no
+    {% endif %}
+    
+
+    secret = {{ secret }}
+    segment_count = 1 
+    fifo_interface = yes
+    monitor = yes
+    resync = yes
+}
