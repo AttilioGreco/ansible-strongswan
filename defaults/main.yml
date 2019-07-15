@@ -37,6 +37,6 @@ strongswan_basedir: "/usr/src/strongswan"
 strongswan:
   tar: "{{strongswan_basedir}}/tar{{strong_swan_tar_name}}"
   src: "{{strongswan_basedir}}/src"
-ha: true
+ha: false
 ha_strong_swan_groups: "{{ groups['ha'] }}"
 secret: VeryS3cr37
