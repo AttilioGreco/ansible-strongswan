@@ -16,11 +16,6 @@
   debug:
     var: strong_swan_tar_name
 
-- name: Clear strongswan.basedir
-  file:
-    state: absent
-    path: "{{ strongswan_basedir }}"
-
 - name: Compile-debian | Create strongswan.basedir dir
   file:
     path: "{{ strongswan_basedir }}"
