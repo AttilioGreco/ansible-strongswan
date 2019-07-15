@@ -4,8 +4,8 @@ ha {
     local = {{ansible_default_ipv4['address']}}
     {% else %}
     remote = {{hostvars[host].ansible_default_ipv4.address}}
-    {%- endif -%}
-    {%- endfor -%}
+    {% endif %}
+    {% endfor %}
 
     {% if ha %}
     load = yes
