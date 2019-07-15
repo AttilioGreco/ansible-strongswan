@@ -1,13 +1,5 @@
 - include_vars: debian.yml
 
-- name: Compile-debian | show active_node_ip
-  debug:
-    var: active_node_ip
-
-- name: Compile-debian | show passive_node_ip
-  debug:
-    var: passive_node_ip
-
 - name: Compile-debian | Installing StrongSwan Dependecy
   become: yes
   apt:
