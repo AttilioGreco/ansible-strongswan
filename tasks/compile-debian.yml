@@ -93,3 +93,6 @@
   file:
     src: strongswan.service
     dest: /etc/systemd/system/strongswan.service
+    owner: root
+    group: root
+  notify: restart strongswan
