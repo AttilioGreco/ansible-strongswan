@@ -40,6 +40,27 @@ Run with default vars:
                 id: it
               secret: something_needs_to_go_here
 
+## Deploy in HA
+Strong swan use IP Cluster Kenel Module for HA deploy.
+Is like a keepaliveD.
+
+Deploy
+1 create 1 VIP bind to PubblicIP
+
+Wit terraform Modules
+
+```
+module "external_vip_VPN" {
+  source = "github.com/entercloudsuite/terraform-modules//external_vip?ref=2.6"
+  external_vips = ["10.10.255.1"]
+  network_id = "${data.openstack_networking_network_v2.network.id}"
+  subnet = "${data.openstack_networking_subnet_v2.subnet_net.id}"
+  region = "${var.region}"
+}
+
+```
+Deploy 2 VM
+
 ## Testing
 
 Tests are performed using [Molecule](http://molecule.readthedocs.org/en/latest/).
