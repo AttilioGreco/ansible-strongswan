@@ -1,8 +1,8 @@
 ha {
-    {%- for host in ha_strong_swan_groups %}
-    {%- if hostvars[host].ansible_default_ipv4.address == ansible_default_ipv4['address'] -%}
+    {% for host in ha_strong_swan_groups %}
+    {% if hostvars[host].ansible_default_ipv4.address == ansible_default_ipv4['address'] %}
     local = {{ansible_default_ipv4['address']}}
-    {%- else -%}
+    {% else %}
     remote = {{hostvars[host].ansible_default_ipv4.address}}
     {%- endif -%}
     {%- endfor -%}
