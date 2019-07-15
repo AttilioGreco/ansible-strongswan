@@ -88,3 +88,8 @@
     chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
     target: install
   become: yes
+
+- name: Compile-debian | Install StrongSwan
+  file:
+    src: strongswan.service
+    dest: /etc/systemd/system/strongswan.service
