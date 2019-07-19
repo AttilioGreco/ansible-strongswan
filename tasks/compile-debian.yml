@@ -78,11 +78,11 @@
   make:
     chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
   when: strongswan_configure.changed
-  register: strongswan_make
+  register: strongswan_make_install
 
 - name: Compile-debian | show strongswan_configure
   debug:
-    var: strongswan_make
+    var: strongswan_make_install
 
 - name: Compile-debian | Install StrongSwan
   make:
