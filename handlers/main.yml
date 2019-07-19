@@ -3,10 +3,17 @@
 
 - name: restart apparmor
   service:
-    name=apparmor
-    state=restarted
+    name: apparmor
+    state: restarted
 
 - name: restart strongswan
   service:
-    name=strongswan
-    state=restarted
+    name: strongswan
+    state: restarted
+
+- name: daemonreload strongswan
+  service:
+    daemon_reload: yes
+    name: strongswan
+    state: restarted
+    

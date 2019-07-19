@@ -77,6 +77,7 @@
 - name: Compile-debian | Build StrongSwan
   make:
     chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
+  when: strongswan_configure.changed
   register: strongswan_make
 
 - name: Compile-debian | show strongswan_configure
@@ -87,12 +88,14 @@
   make:
     chdir: "{{ strongswan.src }}/strongswan-{{compile_download_version}}/"
     target: install
+  when: strongswan_make_install.changed
   become: yes
 
-- name: Compile-debian | Install StrongSwan
-  file:
+- name: Compile-debian | Install systemd Unit
+  copy:
     src: strongswan.service
     dest: /etc/systemd/system/strongswan.service
     owner: root
     group: root
-  notify: restart strongswan
+  when: strongswan_make_install.changed
+  notify: daemonreload strongswan
